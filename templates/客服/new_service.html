@@ -1,0 +1,404 @@
+{% load static%}
+<!DOCTYPE html>
+<html  lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>绿野仙踪客服</title>
+		<meta name="description" content="绿野仙踪客服">
+		<meta name="keywords" content="绿野仙踪客服">
+		
+		
+
+		<!-- 引入favicon图标 -->
+		<link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+		<!-- 初始化样式 -->
+		<link rel="stylesheet" href="{% static 'css\reset.css' %}">
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset.css@2.0.2/reset.min.css">
+		<!-- 引入bootstrap.css -->
+		<link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+
+
+	</head>
+	
+	<!--导入本地js-->
+	<script src={% static "js\new_scripy.js" %}></script>
+	<body >
+		<div class="all clearfix" >
+			<div class="top">
+			
+			<span class="title" style="color:forestgreen">绿野仙踪客服</span>&nbsp;&nbsp;
+			<span id="current-time"></span>
+			
+			</div>
+			<div class="chat">
+			  <ul class="chat_list">
+			    <!-- 他的消息 -->
+			    <li class="left">
+			      <img src={% static "\assets\newp.jpg" %} alt="">
+			      <span>  您好，欢迎进入绿野仙踪客服模块！为保证账户安全，
+              在会话过程中请勿透露您的账号、密码等信息。按数字查询：<br>
+			  1.酒店接送服务如何查询<br>
+			  2.酒店接送服务如何查询<br>
+			  3.酒店接送服务如何查询<br>
+			  
+			  </span>
+				  
+			    </li>
+			    <!-- 我的消息 -->
+			    <li class="right">
+
+			    </li>
+			  </ul>
+			</div>
+<!-- 			<div class="body">
+
+				<div class="load">
+
+					
+
+
+					
+				</div>
+				  
+				
+			</div> -->
+			<div class="bottom">
+				<div class="hstack gap-3">
+				  <input id='1' class="form-control me-auto" type="text" placeholder="Add your item here..." aria-label="Add your item here...">
+				  <button type="button" class="btn btn-secondary">Submit</button>
+				 
+				</div>
+			</div>
+
+		</div>
+			
+		
+		
+		
+		
+	<script type="text/javascript">
+			window.onload = function(){
+				document.body.style.background = "url({% static '/assets/images/980.jpg' %})";
+				document.body.style.backgroundRepeat = "no-repeat";
+				document.body.style.backgroundPosition = "center center";
+				document.body.style.backgroundAttachment = "fixed";
+				document.body.style.backgroundSize = "cover";
+				setInterval(function() {
+				var currentTime = getTodayTime();
+				document.getElementById("current-time").innerText = currentTime;
+				}, 1000);}
+				
+				
+			
+					
+				
+	// 聊天区域div
+	let chatDiv = document.querySelector('.chat')
+	// 聊天容器ul
+	let chatUL = document.querySelector('.chat_list')
+	let content = document.querySelector('.form-control');
+				
+	let chatFn = (text) => {
+		
+		text = content.value;
+		content.value = '';
+		axios({
+			url: 'http://hmajax.itheima.net/api/robot',
+			params: {
+				spoken: text
+			}
+		}).then(res => {
+			console.log(res.data.data.info.text);
+			let response = res.data.data.info.text;
+			chatUL.innerHTML += `<li class="left">
+			  <img src={% static "/assets/newp.jpg" %} alt="">
+			  <span>${response}</span>
+			</li>`
+			// 让滚动条始终在底部
+			chatDiv.scrollTop = chatDiv.scrollHeight
+			
+		});
+        axios({
+            url:"http://localhost:8000/data_info/",
+            method: 'post',
+            data:{
+                spoken:"haoo",
+            }
+        }).then(res=>{
+            console.log(res)
+            spoken= res.data
+            console.log(spoken)
+            console.log('ss')
+            console.log("成功")
+        })
+	}
+
+	document.querySelector('.btn-secondary').addEventListener('click', () => {
+		let text = document.querySelector('.form-control').value;
+		chatUL.innerHTML += `<li class="right">
+		    <span>${text}</span>
+		    <img src={% static "/assets/newp.jpg" %} alt="">
+		  </li>`
+		switch (text){
+			    case '1':
+			        console.log("你按了1");
+			        // 返回对应的代码
+					chatUL.innerHTML += `<li class="left">
+					  <img src={% static "/assets/newp.jpg" %} alt="">
+					  <span>要查询酒店的接送服务，你可以通过以下方式之一：
+
+在预订酒店时询问：在预订酒店时，可以直接向酒店询问他们是否提供接送服务以及具体细节。
+
+访问酒店官方网站：许多酒店的官方网站会提供关于接送服务的信息，你可以在它们的网站上查找或直接与他们联系。
+
+通过在线旅行平台查询：在在线旅行平台上预订酒店时，通常会显示酒店是否提供接送服务以及相关细节。
+
+打电话给酒店：你也可以直接打电话给酒店前台，询问他们的接送服务安排。</span>
+					</li>`
+					content.value = '';
+					break
+			        
+			    case '2':
+			        console.log("你按了2");
+			        // 返回对应的代码
+					chatUL.innerHTML += `<li class="left">
+					  <img src={% static "/assets/newp.jpg" %} alt="">
+					  <span>${text}</span>
+					</li>`
+					content.value = '';
+					break
+			        
+			    case '3':
+			        console.log("你按了3");
+			        // 返回对应的代码
+					chatUL.innerHTML += `<li class="left">
+					  <img src={% static "/assets/newp.jpg" %}alt="">
+					  <span>${text}</span>
+					</li>`
+					content.value = '';
+					break
+			       
+			default:
+					console.log(text ==='1')
+			       chatFn(text);
+		}
+		
+		chatDiv.scrollTop = chatDiv.scrollHeight
+	});
+
+	document.querySelector('.form-control').addEventListener('keyup', e => {
+		if (e.keyCode === 13) {
+	let text = document.querySelector('.form-control').value;
+			chatUL.innerHTML += `<li class="right">
+			    <span>${text}</span>
+			    <img src={% static "/assets/newp.jpg" %} alt="">
+			  </li>`
+			switch (text){
+				    case '1':
+				        console.log("你按了1");
+				        // 返回对应的代码
+						chatUL.innerHTML += `<li class="left">
+						  <img src={% static "/assets/newp.jpg" %} alt="">
+						  <span>要查询酒店的接送服务，你可以通过以下方式之一：
+	
+	在预订酒店时询问：在预订酒店时，可以直接向酒店询问他们是否提供接送服务以及具体细节。
+	
+	访问酒店官方网站：许多酒店的官方网站会提供关于接送服务的信息，你可以在它们的网站上查找或直接与他们联系。
+	
+	通过在线旅行平台查询：在在线旅行平台上预订酒店时，通常会显示酒店是否提供接送服务以及相关细节。
+	
+	打电话给酒店：你也可以直接打电话给酒店前台，询问他们的接送服务安排。</span>
+						</li>`
+						content.value = '';
+						break
+				        
+				    case '2':
+				        console.log("你按了2");
+				        // 返回对应的代码
+						chatUL.innerHTML += `<li class="left">
+						  <img src={% static "/assets/newp.jpg" %} alt="">
+						  <span>${text}</span>
+						</li>`
+						content.value = '';
+						break
+				        
+				    case '3':
+				        console.log("你按了3");
+				        // 返回对应的代码
+						chatUL.innerHTML += `<li class="left">
+						  <img src={% static "/assets/newp.jpg" %} alt="">
+						  <span>${text}</span>
+						</li>`
+						content.value = '';
+						break
+				       
+				default:
+						console.log(text ==='1')
+				       chatFn(text);
+			}
+			
+			chatDiv.scrollTop = chatDiv.scrollHeight
+		}
+	});
+					
+				
+				
+				
+		
+	</script>
+		<!-- 导入axios -->
+		<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.2.0/axios.min.js"></script>
+		<!-- 导入 bootstrap -->
+		<script src={% static "/bootstrap/bootstrap.min.js" %}></script>
+		<!-- jquery -->
+		<script src="https://cdn.staticfile.net/jquery/1.10.2/jquery.min.js"></script>
+        <script src="{% static 'jquery.js' %}"></script>
+		
+	</body>
+	
+	
+	
+	<style>
+		.all{
+			position: relative;
+			margin: 10vw auto;
+			width: 70vw;
+			height: 80vh;
+			background-color: aliceblue;
+			border-radius:1.5vh;
+			padding-top: 1vh;
+			box-sizing: border-box;
+			box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.5) ;
+			
+
+			
+		}
+		.top{
+			
+			margin: 0px auto;
+			display: flex;
+			 
+			height: 7vh;
+			border-bottom: 1px solid blue;
+			padding-left:3vw ;
+
+			justify-content: left;
+			
+			align-items: center;
+			font-family: 楷体;
+			font-size: 3vh;
+			font-weight: 1000;
+
+			
+			/* text-align:/* right */ */
+			/* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'L/* ucida Sans' */, Arial, sans-serif; */
+			  
+			  
+			
+		}
+
+		.body{
+			
+			/* background-color: aqua; */
+			width: 70vw;
+			height: 60vh;
+			margin: 0px auto;
+			
+			
+			
+		}
+		.form-control {
+			height: 10vh;
+		}
+
+		/* before 解决外边距塌陷问题 但如果用flex的话就不要这个 */
+		/* 双伪元素法 */
+		.clearfix::before,
+		.clearfix::after {
+		  content: "";
+		  display: table;
+		}
+	
+		/* after 清除浮动 */
+		.clearfix::after {
+		  clear: both;
+		    }
+		.btn{
+			cursor: text;
+		}
+
+		.bottom button{
+			width: 9vh;
+			height: 9vh;
+		}
+		.chat {
+		  width: 70vw;
+		  height: 60vh;
+		  
+		  /* 顶部留出88px的2个头部导航的高度 */
+		  /* 底部留出89px内边距让出固定在底部的对话框-防止遮挡 */
+		  /* 再多留出10px, 最后一条消息距离底部 */
+		
+		  flex: 1;
+		  overflow-y: scroll;
+		}
+		
+		/* 隐藏滚动条 */
+		.chat::-webkit-scrollbar {
+		  display: none;
+		}
+		
+		.chat ul {
+		  padding-top: 20px;
+		}
+		
+		.chat img {
+		  width: 35px;
+		  height: 35px;
+		  border-radius: 50%;
+		}
+		
+		.chat li {
+		  display: flex;
+		  align-items: top;
+		}
+		
+		.chat li~li {
+		  /* 除了第一个li, 选择所有的兄弟li标签 */
+		  margin-top: 20px;
+		}
+		
+		.chat .right {
+		  display: flex;
+		  justify-content: flex-end;
+		}
+		
+		.left span {
+		  margin-left: 10px;
+		  border-radius: 1px 10px 1px 10px;
+		  display: inline-block;
+		  padding: 12px 16px;
+		  background-image: linear-gradient(180deg, #B1E393 0%, #50D287 100%);
+		  box-shadow: 2px 2px 10px 0px rgba(201, 201, 201, 0.1);
+		  color: #FFFFFF;
+		}
+		
+		.right span {
+		  margin-right: 10px;
+		  border-radius: 1px 10px 1px 10px;
+		  display: inline-block;
+		  padding: 12px 16px;
+		  background: #FFFFFF;
+		  border: 1px solid rgba(247, 247, 247, 1);
+		  color: #000000;
+		}
+		#current-time{
+			text-align: end;
+			font-size: 2vh;
+			font-weight: 1000;
+		}
+	</style>
+</html>
